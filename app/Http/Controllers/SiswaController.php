@@ -64,7 +64,7 @@ class SiswaController extends Controller
 
         // Upload image
         $image = $request->file('image');
-        $image->storeAs('public/siswas', $image->hashName());
+        $image->storeAs('public/siswas/', $image->hashName());
         $siswa->image = $image->hashName();
         $siswa->save();
 
@@ -109,33 +109,37 @@ class SiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-           'nama' => 'required',
-            'jenis_kelamin' => 'required',
-            'agama' => 'required',
-            'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required',
-            'image' => 'image|mimes:jpeg,jpg,png|max:2048',
+        $this->Validate($request,[
+            'nama'=>'required',
+            'jenis_kelamin'=>['required','boolean'],
+            'agama'=>'required',
+            'tempat_lahir'=>'required',
+            'tanggal_lahir'=>'required',
+            'id_kelas'=>'required',
+            'id_jurusan'=>'required',
+            'image'=>'required',
         ]);
 
         $siswa=Siswa::findOrFail($id);
-        $siswa->nama = $request->nama;
-        $siswa->jenis_kelamin = $request->jenis_kelamin;
-        $siswa->agama = $request->agama;
-        $siswa->tempat_lahir = $request->tempat_lahir;
-        $siswa->tanggal_lahir = $request->tanggal_lahir;
-        $siswa->id_kelas = $request->id_kelas;
-        $siswa->id_jurusan = $request->id_jurusan;
-        //upload siswa
-            $image=$request->file('image');
-            $image->storeAs('public/siswas', $image->hashName());
+        $siswa -> nama = $request -> nama;
+        $siswa -> jenis_kelamin = $request -> jenis_kelamin;
+        $siswa -> agama = $request -> agama;
+        $siswa -> tempat_lahir = $request -> tempat_lahir;
+        $siswa -> tanggal_lahir = $request -> tanggal_lahir;
+        $siswa -> id_kelas = $request -> id_kelas;
+        $siswa -> id_jurusan = $request -> id_jurusan;
 
-        // delete siswa
-        Storage::delete('public/siswas/'. $siswa->image);
+        // upload foto
+        $image = $request -> file ('image');
+        $image->storeAs('public/siswas/', $image->hashName());
+
+        // delete produk
+        Storage::delete('public/siswas/', $siswa->image);
 
         $siswa->image=$image->hashName();
         $siswa->save();
         return redirect()->route('siswa.index');
+
     }
 
     /**

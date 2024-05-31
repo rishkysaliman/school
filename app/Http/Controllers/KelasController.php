@@ -103,14 +103,6 @@ class KelasController extends Controller
         $kelas->kelas=$request->kelas;
         $kelas->id_guru = $request->id_guru;
 
-        // upload kelas
-        //     $image=$request->file('image');
-        //     $image->storeAs('public/kelass', $image->hashName());
-
-        // // delete kelas
-        // Storage::delete('public/kelass/'. $kelas->image);
-
-        // $kelas->image=$image->hashName();
         $kelas->save();
         return redirect()->route('kelas.index');
 
